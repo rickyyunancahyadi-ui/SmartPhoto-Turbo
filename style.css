@@ -93,36 +93,63 @@ footer {
   padding: 30px;
   opacity: 0.6;
 }
-/* === SmartPhoto Turbo Pricing === */
+/* === PRICING SECTION === */
 .pricing-section {
   background: #050b1f;
-  color: #ffffff;
-  padding: 60px 20px;
+  padding: 80px 20px;
   text-align: center;
 }
 
+.pricing-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pricing-desc {
+  color: #9aa7ff;
+  margin-bottom: 40px;
+}
+
+/* INI YANG BIKIN JADI KOLOM */
 .pricing-card {
   max-width: 420px;
-  margin: auto;
+  margin: 0 auto;
   background: linear-gradient(180deg, #0b1a4a, #050b1f);
-  border-radius: 16px;
-  padding: 30px;
-  border: 1px solid rgba(0,224,255,0.25);
+  border-radius: 18px;
+  padding: 32px 24px;
+  border: 1px solid rgba(0,224,255,0.3);
+  box-shadow: 0 0 30px rgba(0,224,255,0.1);
 }
 
 .price {
-  font-size: 36px;
+  font-size: 34px;
   font-weight: bold;
   color: #00e0ff;
+  margin: 12px 0;
+}
+
+.price-note {
+  font-size: 14px;
+  color: #9aa7ff;
+  margin-bottom: 24px;
+}
+
+.pricing-list {
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.pricing-list li {
+  margin-bottom: 10px;
 }
 
 .pricing-btn {
   display: block;
-  margin-top: 20px;
   padding: 14px;
   background: #00e0ff;
   color: #001f3f;
   font-weight: bold;
-  border-radius: 10px;
+  border-radius: 12px;
   text-decoration: none;
 }
