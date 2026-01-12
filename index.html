@@ -1,179 +1,971 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartPhoto Turbo - AI Foto Produk</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPhoto Turbo - Professional AI Photo Generator</title>
+    
+    <!-- Tailwind CSS (Specific Version for Stability) -->
+    <script src="https://cdn.tailwindcss.com/3.4.5"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans for Modern/Tech feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        // Safety check to prevent ReferenceError
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        },
+                        colors: {
+                            brand: {
+                                orange: '#FF8C00',
+                                purple: '#6B21A8',
+                                lightPurple: '#E9D5FF',
+                                lightOrange: '#FFEDD5'
+                            }
+                        },
+                        animation: {
+                            'float': 'float 6s ease-in-out infinite',
+                            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        },
+                        keyframes: {
+                            float: {
+                                '0%, 100%': { transform: 'translateY(0)' },
+                                '50%': { transform: 'translateY(-20px)' },
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            console.warn('Tailwind CSS failed to load or is not yet available.');
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Luxurious Gradient Background Elements */
+        .gradient-orb-1 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 140, 0, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            top: -100px;
+            right: -100px;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .gradient-orb-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(107, 33, 168, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            top: 20%;
+            left: -150px;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FF8C00 0%, #9333EA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #FF8C00 0%, #9333EA 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(147, 51, 234, 0.3);
+        }
+
+        /* Mockup containers */
+        .mockup-container {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased text-slate-800">
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container center">
-    <h1>
-      AI Foto Produk Profesional  
-      <br>Dalam Hitungan Detik
-    </h1>
-    <p>
-      Ubah foto biasa jadi foto produk studio, katalog, dan iklan hanya dengan AI
-    </p>
-    <a href="#harga" class="btn">Coba Sekarang</a>
-  </div>
-</section>
+    <!-- Decoration Orbs -->
+    <div class="gradient-orb-1 animation-pulse-slow"></div>
+    <div class="gradient-orb-2 animation-pulse-slow"></div>
 
-<!-- CONTOH PRODUK -->
-<section>
-  <div class="container">
-    <h2 class="center">Contoh Hasil Foto Produk AI</h2>
-    <p class="center subtitle">
-      Digunakan untuk marketplace, katalog, dan iklan digital
-    </p>
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-brand-purple flex items-center justify-center text-white font-bold">
+                        S
+                    </div>
+                    <span class="font-bold text-xl tracking-tight">SmartPhoto <span class="gradient-text">Turbo</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#features" class="text-slate-600 hover:text-brand-purple transition font-medium">Fitur</a>
+                    <a href="#how-it-works" class="text-slate-600 hover:text-brand-purple transition font-medium">Cara Kerja</a>
+                    <a href="#pricing" class="text-slate-600 hover:text-brand-purple transition font-medium">Harga</a>
+                    <a href="#pricing" class="btn-primary text-white px-6 py-2 rounded-full font-semibold text-sm">
+                        Dapatkan Sekarang
+                    </a>
+                </div>
 
-    <div class="grid grid-4">
-      <div>
-        <img src="assets/produk1.jpg">
-        <p>Background Studio Premium</p>
-      </div>
-      <div>
-        <img src="assets/produk2.jpg">
-        <p>Foto Katalog Marketplace</p>
-      </div>
-      <div>
-        <img src="assets/produk3.jpg">
-        <p>Visual Iklan Produk</p>
-      </div>
-      <div>
-        <img src="assets/produk4.jpg">
-        <p>Foto Lifestyle AI</p>
-      </div>
-    </div>
-  </div>
-</section>
-  <section class="pricing-section">
-  
-</section>
-
-<!-- BEFORE AFTER -->
-<section>
-  <div class="container">
-    <h2 class="center">Before & After Foto Produk</h2>
-    <p class="center subtitle">
-      Perbedaan nyata sebelum dan sesudah diproses AI
-    </p>
-
-    <div class="grid grid-2">
-      <div class="card">
-        <div class="grid grid-2">
-          <div>
-            <small>BEFORE</small>
-            <img src="assets/before1.jpg">
-          </div>
-          <div>
-            <small class="after">AFTER (AI)</small>
-            <img src="assets/after1.jpg">
-          </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-slate-900 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="grid grid-2">
-          <div>
-            <small>BEFORE</small>
-            <img src="assets/before2.jpg">
-          </div>
-          <div>
-            <small class="after">AFTER (AI)</small>
-            <img src="assets/after2.jpg">
-          </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md absolute w-full border-b border-gray-100">
+            <div class="px-4 pt-2 pb-6 space-y-2 shadow-lg">
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-purple hover:bg-gray-50">Fitur</a>
+                <a href="#how-it-works" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-purple hover:bg-gray-50">Cara Kerja</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-purple hover:bg-gray-50">Harga</a>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  
-<section class="pricing-section">
-  <h2 class="pricing-title">Unlimited Access</h2>
-  <p class="pricing-desc">Satu harga. Semua fitur. Tanpa batas.</p>
+    </nav>
 
-  <div class="pricing-card">
-    <h3>Paket Unlimited</h3>
-    <div class="price">Rp 60.000</div>
-    <p class="price-note">Sekali bayar • Unlimited</p>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 text-orange-600 font-semibold text-sm mb-8 animate-bounce">
+                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                Diskon Spesial Terbatas
+            </div>
 
-    <ul class="pricing-list">
-      <li>Unlimited generate foto produk</li>
-      <li>Tanpa watermark</li>
-      <li>Resolusi tinggi & profesional</li>
-      <li>Background otomatis</li>
-      <li>Siap untuk iklan & marketplace</li>
-      <li>Hemat biaya foto studio</li>
-    </ul>
+            <!-- Headline -->
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-slate-900">
+                Ubah Foto Biasa Jadi <br>
+                <span class="gradient-text">Foto Produk Profesional</span>
+            </h1>
+            
+            <!-- Subheadline -->
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-500 mb-10">
+                Cukup Upload satu foto, smartphoto turbo bantu hasilkan foto produk siap iklan tanpa ribet dan tanpa studio mahal. Cocok untuk : UMKM, seller shopee/tiktok, first-time visitor.
+            </p>
 
-    <a href="#wa" class="pricing-btn">Aktifkan Unlimited</a>
-  </div>
-</section>
-  
-<!-- CTA -->
-<section id="harga">
-  <div class="container center">
-    <h2>Siap Naikkan Kualitas Foto Produk?</h2>
-    <p>
-      Cocok untuk UMKM, brand, seller marketplace, dan iklan digital
-    </p>
-    <a
-      href="https://wa.me/6285693623474?text=Halo%2C%20saya%20tertarik%20dengan%20SmartPhoto%20Turbo!%20Bisa%20dibantu%20informasinya%3F"
-      target="_blank"
-      class="btn">
-      Hubungi via WhatsApp
-    </a>
-  </div>
-</section>
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                <a href="#pricing" class="btn-primary text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2">
+                    Mulai Sekarang <i class="fas fa-arrow-right"></i>
+                </a>
+                <!-- Tombol "Lihat Demo" dihapus sesuai permintaan -->
+            </div>
 
-<footer>
-  © 2025 SmartPhoto Turbo • AI Foto Produk
-</footer>
-<!-- Floating WhatsApp Button -->
-<a href="https://wa.me/6285693623474?text=Halo%2C%20saya%20tertarik%20dengan%20SmartPhoto%20Turbo!%20Bisa%20dibantu%20informasinya%3F"
-   target="_blank"
-   class="wa-float">
-   💬
-</a>
+        </div>
+    </section>
 
-<style>
-.wa-float{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 58px;
-  height: 58px;
-  background: #25D366;
-  color: #fff;
-  font-size: 26px;
-  font-weight: bold;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 58px;
-  text-decoration: none;
-  box-shadow: 0 6px 15px rgba(37,211,102,0.5);
-  z-index: 9999;
-  animation: pulse 2s infinite;
-}
+    <!-- PAIN SECTION -->
+    <section class="py-16 bg-orange-50/50 border-t border-b border-orange-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Kenapa Banyak Produk <span class="text-red-600">Sulit Laku?</span>
+                </h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">
+                    Di dunia online, pembeli tidak bisa menyentuh produk. Mereka hanya melihat foto. 
+                    Jika visual Anda lemah, mereka akan pergi ke toko sebelah.
+                </p>
+            </div>
 
-/* Animasi pulse */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(37,211,102,0.7);
-  }
-  70% {
-    transform: scale(1.08);
-    box-shadow: 0 0 0 18px rgba(37,211,102,0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(37,211,102,0);
-  }
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Pain Point 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-red-100 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-eye-slash"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Visual Kurang Menarik</h3>
+                    <p class="text-slate-600 text-sm">
+                        Foto produk yang gelap, buram, atau background berantakan membuat pembeli ragu akan kualitas produk Anda, lalu mereka <i>skip</i>.
+                    </p>
+                </div>
 
+                <!-- Pain Point 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-red-100 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Biaya Studio Mahal</h3>
+                    <p class="text-slate-600 text-sm">
+                        Sewa fotografer pro dan studio butuh jutaan rupiah sekali sesi. Ini memakan margin keuntungan, terutama bagi UMKM.
+                    </p>
+                </div>
+
+                <!-- Pain Point 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-red-100 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Kalah Saing Visual</h3>
+                    <p class="text-slate-600 text-sm">
+                        Kompetitor punya foto produk yang <i>glowing</i> dan estetik. Produk Anda yang sebenarnya lebih bagus malah tenggelam di marketplace.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SOLUTION SECTION -->
+    <section class="py-20 bg-white relative overflow-hidden">
+        <!-- Subtle decor -->
+        <div class="absolute right-0 top-0 w-64 h-64 bg-purple-50 rounded-full blur-3xl opacity-50 -z-10 transform translate-x-1/2 -translate-y-1/2"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-purple font-semibold tracking-wide uppercase text-sm mb-2 block">Solusi All-in-One</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Solusinya : <span class="gradient-text">SmartPhoto Turbo</span>
+                </h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">
+                    Tidak perlu skill fotografi canggih atau peralatan mahal. AI canggih kami mengambil alih pekerjaan berat, sehingga Anda bisa fokus berjualan.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <!-- Solution 1 -->
+                <div class="p-6">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-brand-orange to-yellow-400 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-orange-200">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Studio dalam Genggaman</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Ubah foto HP biasa menjadi kualitas studio hanya dalam satu klik. Pencahayaan, bayangan, dan estetika diatur otomatis oleh AI.
+                    </p>
+                </div>
+
+                <!-- Solution 2 -->
+                <div class="p-6">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-brand-purple to-indigo-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-purple-200">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Hemat Biaya Jutaan</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Lupakan biaya sewa studio atau fotografer mahal. Dengan harga langganan terjangkau, Anda bisa generate ratusan foto kapan saja.
+                    </p>
+                </div>
+
+                <!-- Solution 3 -->
+                <div class="p-6">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-400 to-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-green-200">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Sales Booster</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Visual yang menarik terbukti meningkatkan kepercayaan pembeli (Trust) dan rasio konversi penjualan hingga 3x lipat.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW BEFORE AFTER SECTION -->
+    <section class="py-20 bg-slate-50 relative border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Lihat <span class="gradient-text">Perbedaannya</span>
+                </h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+                    Bukti nyata bagaimana SmartPhoto Turbo mengubah foto biasa menjadi luar biasa dalam hitungan detik.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
+                <!-- Before Card -->
+                <div class="relative rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 bg-white aspect-[4/3] flex items-center justify-center group hover:border-gray-400 transition-colors">
+                    <div class="absolute top-4 left-4 bg-gray-800/80 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-semibold z-10">
+                        Before
+                    </div>
+                    <div class="text-center p-6">
+                        <i class="fas fa-image text-5xl text-gray-200 mb-4"></i>
+                        <p class="text-gray-400 font-medium">Tempat Foto Asli</p>
+                        <p class="text-xs text-gray-400 mt-2">Silakan masukkan foto "Before" di sini</p>
+                    </div>
+                </div>
+
+                <!-- After Card -->
+                <div class="relative rounded-2xl overflow-hidden border border-purple-200 bg-white shadow-2xl shadow-purple-500/10 aspect-[4/3] flex items-center justify-center group">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-50/30 to-orange-50/30 opacity-50"></div>
+                    <div class="absolute top-4 right-4 bg-gradient-to-r from-brand-orange to-brand-purple text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg z-10">
+                        After
+                    </div>
+                    <div class="text-center p-6 relative z-10">
+                        <i class="fas fa-wand-magic-sparkles text-5xl text-brand-purple mb-4"></i>
+                        <p class="text-slate-600 font-bold">Tempat Hasil AI</p>
+                        <p class="text-xs text-slate-400 mt-2">Silakan masukkan foto "After" di sini</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW CARA MENGGUNAKAN SECTION -->
+    <!-- Added id="how-it-works" here so the navbar link still works -->
+    <section id="how-it-works" class="py-24 bg-white relative overflow-hidden">
+       <!-- Gradient Blob Decor -->
+       <div class="absolute left-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-orange-50 rounded-full blur-3xl opacity-60 -z-10"></div>
+       <div class="absolute right-0 bottom-0 w-96 h-96 bg-purple-50 rounded-full blur-3xl opacity-40 -z-10"></div>
+
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                 <span class="text-brand-orange font-semibold tracking-wide uppercase text-sm mb-2 block">Panduan Singkat</span>
+                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Cara Menggunakan <span class="gradient-text">SmartPhoto Turbo</span>
+                </h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+                    Teknologi canggih tidak harus rumit. Kami merancang antarmuka yang intuitif agar siapapun bisa menggunakannya dalam 3 langkah.
+                </p>
+            </div>
+
+            <!-- Steps Grid -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="relative p-8 rounded-3xl border border-gray-100 bg-white hover:shadow-xl hover:shadow-orange-500/10 transition duration-300 group z-10">
+                    <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">1. Upload atau Tulis</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Unggah foto produk mentah dari galeri HP Anda. Tidak punya foto? Cukup ketik deskripsi produk yang ingin Anda visualisasikan di kolom prompt.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative p-8 rounded-3xl border border-gray-100 bg-white hover:shadow-xl hover:shadow-purple-500/10 transition duration-300 group z-10">
+                    <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-brand-purple text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">2. Kustomisasi Gaya</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Pilih template suasana (Indoor, Outdoor, Luxury) atau atur pencahayaan dan warna background sesuai identitas brand Anda.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative p-8 rounded-3xl border border-gray-100 bg-white hover:shadow-xl hover:shadow-blue-500/10 transition duration-300 group z-10">
+                    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-file-download"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">3. Generate & Unduh</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Klik tombol 'Generate'. Dalam hitungan detik, AI memproses gambar. Pilih hasil terbaik dan unduh dengan kualitas 4K.
+                    </p>
+                </div>
+            </div>
+       </div>
+    </section>
+
+    <!-- NEW CORE FEATURES SECTION (FITUR INTI) -->
+    <section class="py-20 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-slate-500 font-semibold tracking-wide uppercase text-sm mb-2 block">Teknologi Mutakhir</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Fitur Inti <span class="gradient-text">SmartPhoto Turbo</span>
+                </h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+                    Kombinasi teknologi AI terbaru untuk memastikan hasil yang tidak hanya estetik, tapi juga realistis dan layak jual.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Core Feature 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mb-4">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Pencahayaan Adaptif</h3>
+                    <p class="text-slate-600 text-sm">
+                        AI menyesuaikan arah cahaya dan bayangan produk agar menyatu sempurna dengan background baru.
+                    </p>
+                </div>
+
+                <!-- Core Feature 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Resolusi Ultra 4K</h3>
+                    <p class="text-slate-600 text-sm">
+                        Export hasil hingga resolusi 4K. Tajam dan jernih, siap cetak untuk katalog, brosur, atau baliho tanpa pecah.
+                    </p>
+                </div>
+
+                <!-- Core Feature 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-4">
+                        <i class="fas fa-eraser"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Hapus Background Instan</h3>
+                    <p class="text-slate-600 text-sm">
+                        Teknologi pemisahan objek presisi tinggi. Rambut halus atau sudut rumit terpotong rapi dalam hitungan detik.
+                    </p>
+                </div>
+
+                <!-- Core Feature 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-brand-purple mb-4">
+                        <i class="fas fa-crop-alt"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Smart Resize</h3>
+                    <p class="text-slate-600 text-sm">
+                        Satu kali generate, otomatis tersedia dalam berbagai rasio (1:1, 9:16) untuk Instagram, TikTok, dan Marketplace.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gradient-to-b from-white to-gray-50 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-base text-brand-purple font-semibold tracking-wide uppercase">Fitur Unggulan</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Satu Platform, Dua Solusi Ajaib
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <!-- Feature 1 -->
+                <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-400 to-orange-600"></div>
+                    <div class="p-8">
+                        <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-camera-retro text-2xl text-orange-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Generate Foto ke Foto</h3>
+                        <p class="text-gray-600 mb-6">
+                            Punya foto produk tapi background berantakan? Upload foto mentah Anda, dan AI kami akan menyulapnya menjadi foto studio profesional dengan pencahayaan sempurna.
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-orange-500 mr-2"></i> Mempertahankan detail produk asli
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-orange-500 mr-2"></i> Pilihan background tak terbatas
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-purple-700"></div>
+                    <div class="p-8">
+                        <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-lightbulb text-2xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Ide ke Foto Produk</h3>
+                        <p class="text-gray-600 mb-6">
+                            Belum punya produk fisik? Cukup ketik deskripsi dan gaya yang Anda inginkan. SmartPhoto Turbo akan memvisualisasikan ide Anda menjadi gambar produk yang nyata.
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-purple-500 mr-2"></i> Kontrol gaya & estetik penuh
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-purple-500 mr-2"></i> Hasil resolusi tinggi
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Value Add Section -->
+            <div class="mt-16 glass-card rounded-2xl p-8 border border-purple-100 text-center">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div>
+                        <i class="fas fa-pen-fancy text-3xl gradient-text mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">Deskripsi Kustom</h4>
+                        <p class="text-sm text-gray-500">Tambahkan prompt teks untuk mengarahkan hasil sesuai imajinasi Anda.</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-palette text-3xl gradient-text mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">Pilihan Gaya</h4>
+                        <p class="text-sm text-gray-500">Pilih style: Minimalis, Mewah, Alam, atau Neon Cyberpunk.</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-bolt text-3xl gradient-text mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">Turbo Speed</h4>
+                        <p class="text-sm text-gray-500">Generate hasil hanya dalam hitungan detik.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW USE CASE / SHOWCASE SECTION (ADDED) -->
+    <section class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-orange font-semibold tracking-wide uppercase text-sm mb-2 block">Galeri Inspirasi</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Satu AI untuk <span class="gradient-text">Semua Produk</span>
+                </h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+                    Apapun jualan Anda, SmartPhoto Turbo meningkatkan nilai jualnya secara instan. Lihat bagaimana kami mengubah berbagai kategori produk.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Use Case 1: Fashion -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/5] mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl group-hover:shadow-orange-500/10 transition duration-300">
+                         <!-- Image Placeholder -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:scale-105 transition duration-500">
+                             <i class="fas fa-tshirt text-5xl mb-3 text-gray-300"></i>
+                             <span class="text-xs font-medium uppercase tracking-wider">Foto Fashion</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-orange transition-colors">Fashion & Apparel</h3>
+                    <p class="text-slate-500 text-sm mt-3 leading-relaxed">Ubah foto baju di gantungan biasa menjadi tampilan katalog lookbook yang estetik tanpa perlu sewa model.</p>
+                </div>
+
+                <!-- Use Case 2: Beauty -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/5] mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl group-hover:shadow-purple-500/10 transition duration-300">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:scale-105 transition duration-500">
+                             <i class="fas fa-pump-soap text-5xl mb-3 text-gray-300"></i>
+                             <span class="text-xs font-medium uppercase tracking-wider">Foto Skincare</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-purple transition-colors">Beauty & Skincare</h3>
+                    <p class="text-slate-500 text-sm mt-3 leading-relaxed">Hadirkan nuansa bersih, glowing, dan premium untuk produk kecantikan agar lebih dipercaya pelanggan.</p>
+                </div>
+
+                <!-- Use Case 3: Kuliner -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/5] mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl group-hover:shadow-orange-500/10 transition duration-300">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:scale-105 transition duration-500">
+                             <i class="fas fa-utensils text-5xl mb-3 text-gray-300"></i>
+                             <span class="text-xs font-medium uppercase tracking-wider">Foto Kuliner</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-orange transition-colors">Food & Beverage</h3>
+                    <p class="text-slate-500 text-sm mt-3 leading-relaxed">Bikin foto makanan jadi menggugah selera dengan pencahayaan dramatis, asap virtual, dan properti meja.</p>
+                </div>
+
+                <!-- Use Case 4: Home Living -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/5] mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl group-hover:shadow-purple-500/10 transition duration-300">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:scale-105 transition duration-500">
+                             <i class="fas fa-couch text-5xl mb-3 text-gray-300"></i>
+                             <span class="text-xs font-medium uppercase tracking-wider">Foto Interior</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-purple transition-colors">Home & Living</h3>
+                    <p class="text-slate-500 text-sm mt-3 leading-relaxed">Visualisasikan produk dekorasi di dalam ruangan nyata yang nyaman tanpa perlu set studio interior mahal.</p>
+                </div>
+
+                <!-- Use Case 5: Gadget -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/5] mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl group-hover:shadow-orange-500/10 transition duration-300">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:scale-105 transition duration-500">
+                             <i class="fas fa-mobile-alt text-5xl mb-3 text-gray-300"></i>
+                             <span class="text-xs font-medium uppercase tracking-wider">Foto Gadget</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-orange transition-colors">Gadget & Elektronik</h3>
+                    <p class="text-slate-500 text-sm mt-3 leading-relaxed">Tonjolkan kesan modern dan futuristik dengan background neon cyber atau clean minimalist ala tech giant.</p>
+                </div>
+
+                <!-- Use Case 6: Footwear -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/5] mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl group-hover:shadow-purple-500/10 transition duration-300">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:scale-105 transition duration-500">
+                             <i class="fas fa-shoe-prints text-5xl mb-3 text-gray-300"></i>
+                             <span class="text-xs font-medium uppercase tracking-wider">Foto Sepatu</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-purple transition-colors">Sneakers & Footwear</h3>
+                    <p class="text-slate-500 text-sm mt-3 leading-relaxed">Buat sepatu terlihat dinamis di jalanan kota, podium studio, atau alam bebas yang menantang.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW COMPARISON SECTION (SMARTPHOTO VS OLD WAY) -->
+    <section class="py-20 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-slate-500 font-semibold tracking-wide uppercase text-sm mb-2 block">Perbandingan Jujur</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    SmartPhoto Turbo <span class="text-slate-400">vs</span> Cara Lama
+                </h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+                    Kenapa harus ribet dan mahal kalau ada cara yang lebih cerdas?
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Cara Lama Card -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-200 opacity-80 hover:opacity-100 transition duration-300">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-600">Cara Lama</h3>
+                    </div>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-gray-500">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>Sewa studio & fotografer mahal (Jutaan/sesi)</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-500">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>Harus kirim produk fisik ke lokasi</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-500">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>Menunggu hasil edit berhari-hari</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-500">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>Terbatas variasi background</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SmartPhoto Turbo Card -->
+                <div class="bg-white p-8 rounded-3xl border-2 border-brand-purple shadow-xl shadow-purple-500/10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-purple text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        RECOMMENDED
+                    </div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-brand-purple">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">SmartPhoto Turbo</h3>
+                    </div>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-slate-700 font-medium">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Biaya sangat terjangkau (Mulai 49rb)</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-700 font-medium">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Cukup foto dari HP, tidak perlu kirim barang</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-700 font-medium">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Hasil jadi dalam hitungan detik</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-700 font-medium">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Unlimited variasi background & gaya</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section (UPDATED BACKGROUND COLOR) -->
+    <section id="pricing" class="py-24 relative overflow-hidden bg-slate-900">
+        <!-- Background Decor (Adjusted for Dark Mode) -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl max-h-96 bg-gradient-to-r from-orange-500 to-purple-600 blur-3xl opacity-20 rounded-full z-0"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-white">Penawaran Spesial</h2>
+                <p class="text-slate-400 mt-2">Investasi kecil untuk peningkatan omzet besar.</p>
+            </div>
+
+            <!-- Pricing Card -->
+            <div class="glass-card rounded-3xl p-1 bg-gradient-to-br from-orange-400 via-purple-500 to-blue-500 shadow-2xl transform hover:scale-[1.02] transition-transform duration-500">
+                <div class="bg-white rounded-[20px] p-8 md:p-12 text-center h-full relative overflow-hidden">
+                    
+                    <!-- Ribbons -->
+                    <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        PROMO TERBATAS
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">SmartPhoto Turbo License</h3>
+                    <p class="text-gray-500 text-sm mb-6">Akses penuh ke semua fitur premium</p>
+
+                    <div class="flex items-center justify-center gap-3 mb-6">
+                        <span class="text-gray-400 text-xl font-medium line-through decoration-red-500 decoration-2">Rp 120.000</span>
+                        <div class="flex items-start">
+                            <span class="text-2xl font-bold text-slate-800 mt-2">Rp</span>
+                            <span class="text-6xl font-extrabold gradient-text tracking-tight">49</span>
+                            <div class="flex flex-col items-start ml-1">
+                                <span class="text-2xl font-bold text-slate-800">.000</span>
+                                <span class="text-xs text-gray-500 font-medium">/bulan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features List inside Pricing -->
+                    <div class="space-y-4 mb-8 text-left max-w-xs mx-auto">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Unlimited Generate Foto</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700 font-semibold text-brand-purple">1x Klik = 10 Hasil Foto</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Fitur Ide ke Foto Produk</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Akses 50+ Gaya Premium</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Resolusi HD (4K Support)</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA WhatsApp Button (UPDATED TEXT) -->
+                    <a href="https://wa.me/6285693623474?text=Halo%20Admin,%20saya%20mau%20ambil%20promo%20SmartPhoto%20Turbo%2049rb" target="_blank" class="block w-full text-center btn-primary text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-purple-500/50 transition text-lg mb-4">
+                        <i class="fab fa-whatsapp mr-2 text-xl"></i> Hubungi kami via Whatsapp
+                    </a>
+                    
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-400">Garansi uang kembali 7 hari jika tidak puas.</p>
+                        <p class="text-xs text-orange-600 font-medium"><i class="fas fa-shield-alt mr-1"></i> Garansi & Bantuan Penuh jika terjadi Error Sistem</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW FAQ SECTION (ADDED) -->
+    <section id="faq" class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-purple font-semibold tracking-wide uppercase text-sm mb-2 block">Pusat Bantuan</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+                    Pertanyaan <span class="gradient-text">Umum</span>
+                </h2>
+                <p class="text-slate-500 text-lg">
+                    Jawaban atas hal-hal yang mungkin Anda penasaran tentang SmartPhoto Turbo.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <details class="group bg-slate-50 rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:bg-purple-50 transition duration-300 border border-transparent hover:border-purple-100">
+                    <summary class="flex items-center justify-between font-bold text-slate-800 text-lg">
+                        Apakah saya perlu keahlian edit foto?
+                        <span class="transition group-open:rotate-180">
+                            <i class="fas fa-chevron-down text-brand-purple"></i>
+                        </span>
+                    </summary>
+                    <p class="text-slate-600 mt-4 leading-relaxed text-sm">
+                        Tidak sama sekali! SmartPhoto Turbo dirancang untuk pemula. AI kami bekerja otomatis mengatur pencahayaan, bayangan, dan komposisi. Anda cukup upload, pilih gaya, dan download.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 2 -->
+                <details class="group bg-slate-50 rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:bg-purple-50 transition duration-300 border border-transparent hover:border-purple-100">
+                    <summary class="flex items-center justify-between font-bold text-slate-800 text-lg">
+                        Apakah hasil fotonya boleh untuk komersial?
+                        <span class="transition group-open:rotate-180">
+                            <i class="fas fa-chevron-down text-brand-purple"></i>
+                        </span>
+                    </summary>
+                    <p class="text-slate-600 mt-4 leading-relaxed text-sm">
+                        Tentu saja! 100% foto yang Anda generate adalah milik Anda sepenuhnya (Royalty-Free). Anda bebas menggunakannya untuk iklan Facebook/TikTok, katalog Shopee/Tokopedia, atau media sosial tanpa biaya tambahan.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 3 -->
+                <details class="group bg-slate-50 rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:bg-purple-50 transition duration-300 border border-transparent hover:border-purple-100">
+                    <summary class="flex items-center justify-between font-bold text-slate-800 text-lg">
+                        Berapa lama proses generate fotonya?
+                        <span class="transition group-open:rotate-180">
+                            <i class="fas fa-chevron-down text-brand-purple"></i>
+                        </span>
+                    </summary>
+                    <p class="text-slate-600 mt-4 leading-relaxed text-sm">
+                        Sangat cepat! Rata-rata hanya butuh 10-30 detik untuk menghasilkan 10 variasi foto sekaligus. Jauh lebih cepat daripada menunggu fotografer mengedit satu foto.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details class="group bg-slate-50 rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:bg-purple-50 transition duration-300 border border-transparent hover:border-purple-100">
+                    <summary class="flex items-center justify-between font-bold text-slate-800 text-lg">
+                        Bisakah digunakan lewat HP?
+                        <span class="transition group-open:rotate-180">
+                            <i class="fas fa-chevron-down text-brand-purple"></i>
+                        </span>
+                    </summary>
+                    <p class="text-slate-600 mt-4 leading-relaxed text-sm">
+                        Ya, SmartPhoto Turbo berbasis web (cloud). Anda bisa mengaksesnya lewat browser HP (Chrome/Safari), Tablet, atau Laptop tanpa perlu install aplikasi berat yang memakan memori.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 5 -->
+                <details class="group bg-slate-50 rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:bg-purple-50 transition duration-300 border border-transparent hover:border-purple-100">
+                    <summary class="flex items-center justify-between font-bold text-slate-800 text-lg">
+                        Bagaimana sistem garansinya?
+                        <span class="transition group-open:rotate-180">
+                            <i class="fas fa-chevron-down text-brand-purple"></i>
+                        </span>
+                    </summary>
+                    <p class="text-slate-600 mt-4 leading-relaxed text-sm">
+                        Kami memberikan garansi uang kembali 7 hari jika Anda mengalami kendala teknis yang tidak bisa kami selesaikan, atau jika hasil generate error terus menerus. Kepuasan Anda prioritas kami.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW FINAL CTA SECTION (UPDATED TEXT) -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-brand-orange to-brand-purple"></div>
+        <!-- Pattern Overlay for texture -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Siap Meledakkan <br>Omzet Penjualan Anda?
+            </h2>
+            <p class="text-orange-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+                Jangan biarkan foto produk yang buruk menghambat kesuksesan bisnis Anda. Amankan harga promo ini sebelum kembali normal.
+            </p>
+            
+            <a href="https://wa.me/6285693623474?text=Halo%20Admin,%20saya%20tertarik%20cobain%20SmartPhoto%20Turbo,%20mau%20tanya-tanya%20dulu" target="_blank" class="inline-flex items-center justify-center bg-white text-brand-purple font-bold py-4 px-10 rounded-full shadow-2xl hover:bg-gray-50 hover:scale-105 transition duration-300 text-lg group">
+                <i class="fab fa-whatsapp mr-2 text-2xl text-green-500 group-hover:scale-110 transition-transform"></i> Hubungi kami via Whatsapp
+            </a>
+            <p class="text-white/60 text-sm mt-6">Respon Cepat • Konsultasi Gratis</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 pt-16 pb-8 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-brand-purple flex items-center justify-center text-white font-bold text-sm">S</div>
+                        <span class="font-bold text-xl">SmartPhoto Turbo</span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+                        Platform AI nomor satu untuk membantu UMKM dan kreator membuat foto produk yang menjual tanpa perlu studio mahal.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4">Produk</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-purple">Fitur Utama</a></li>
+                        <li><a href="#pricing" class="hover:text-brand-purple">Harga</a></li>
+                        <li><a href="#faq" class="hover:text-brand-purple">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-purple">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-purple">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-purple">Kontak Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-400">&copy; 2024 SmartPhoto Turbo. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-brand-purple"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-brand-purple"><i class="fab fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-brand-purple"><i class="fab fa-linkedin text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Simple Script for Mobile Menu & Smooth Scroll -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Navbar Blur Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
+            } else {
+                navbar.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
+            }
+        });
+
+        // Smooth Scroll for Anchor Links (FIXED for error handling)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                menu.classList.add('hidden'); // Close mobile menu if open
+                
+                const targetId = this.getAttribute('href');
+                
+                // Only try to query selector if href is not just "#"
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+
+                // Add safety check: only scroll if element exists
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                } else {
+                    console.warn(`Target element with ID "${targetId}" not found.`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
